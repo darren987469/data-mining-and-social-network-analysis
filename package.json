@@ -1,0 +1,17 @@
+{
+  "name": "fb-page-analysis",
+  "version": "0.0.1",
+  "description": "Project for course 'Data mining and social network analysis'",
+  "dependencies": {
+    "async": "*",
+    "fbgraph": "*",
+    "mongoskin": "*"
+  },
+  "engines": {
+    "node": "0.12.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/darren987469/fb-page-analysis.git"
+  }
+}
