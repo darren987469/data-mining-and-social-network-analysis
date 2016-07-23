@@ -7,16 +7,15 @@ var db = mongo.db("mongodb://localhost:27017/test", {native_parser:true});
 
 // merge data from restaurant coll and history coll
 var ids = config.ids;
-// var ids = ["260099640775347"];
-// missing id: 1500578933496748
+
 
 async.eachSeries(ids, function(id, callback){
 	
 	// get posts
-	db.collection('post').findOne({id:id},function(err, result){
+	db.collection('newpost').findOne({id:id},function(err, result){
 		if(err) {
 			console.log(err);
-			return;	
+			process.exit(1);	
 		} else {
 			var posts = result.posts;
 			
@@ -24,7 +23,7 @@ async.eachSeries(ids, function(id, callback){
 			db.collection('restaurant').findOne({id:id},function(err, result) {
 				if(err) {
 					console.log(err);
-					return;	
+					process.exit(1);	
 				} 
 				else {
 					var record = {
@@ -37,7 +36,10 @@ async.eachSeries(ids, function(id, callback){
 					
 					// get history
 					db.collection('history').findOne({id:id}, function(err, result){
-						if(err) console.log(err);
+						if(err){
+							console.log(err);
+							process.exit(1);	
+						} 
 						else {
 							result.location = location;
 							result.history.unshift(record);
@@ -46,7 +48,10 @@ async.eachSeries(ids, function(id, callback){
 							
 							// combine data and insert to data collection
 							db.collection('data').insert(result, function(err, result){
-								if(err) console.log(err);
+								if(err){
+									console.log(err);
+									process.exit(1);
+								} 
 								else {
 									console.log(result);
 									db.close();
